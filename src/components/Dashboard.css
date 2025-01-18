@@ -1,0 +1,90 @@
+.dashboard-container {
+    width: 90%;
+    height: 100vh;
+    margin: auto;
+}
+
+.aside-tasklist,
+.section-calendar {
+    background-color: var(--dark);
+    border-radius: 7px;
+    box-shadow:
+        inset 0px 1px 1px 0px rgba(30, 81, 40, 0.1),
+        /* Greenish inner shadow */
+        0px 50px 100px -20px rgba(30, 81, 40, 0.25),
+        /* Outer shadow with green tint */
+        0px 30px 60px -30px rgba(0, 0, 0, 0.3);
+
+}
+
+@media (min-width: 1200px) {
+
+    .dashboard-main {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+    }
+
+    .aside-tasklist {
+        width: 40%;
+        min-height: 720px;
+    }
+
+    .section-calendar {
+        width: 59%;
+        min-height: 720px;
+    }
+
+}
+
+@media (max-width: 1199px) {
+    .aside-tasklist {
+        margin-bottom: 5rem;
+    }
+}
+
+
+
+.dashboard-header {
+    display: flex;
+    justify-content: space-between;
+    padding: 5px 50px;
+    align-items: center;
+
+    margin-top: 10px;
+}
+
+.activity-dropdown {
+    min-width: 380px;
+    border: none;
+    outline: none;
+    border-radius: 7px;
+    font-size: 15px;
+    height: 2.5rem;
+    background-color: var(--light);
+    padding: 0px 20px;
+}
+
+
+@media (max-width: 768px) {
+    .dashboard-header {
+        flex-direction: column;
+    }
+
+}
+
+.aside-tasklist,
+header {
+    position: relative;
+}
+
+.li {
+    padding: 10px 0px;
+}
+
+.li:hover {
+    background-color: var(--dark);
+    border-radius: 7px;
+    transform: scale(1.1);
+    cursor: pointer;
+}

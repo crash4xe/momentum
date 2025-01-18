@@ -1,0 +1,21 @@
+.login,
+.register {
+    animation: slideRight 0.4s ease-in-out;
+}
+
+@keyframes slideRight {
+    0% {
+        transform: translateX(-50%);
+        opacity: 0;
+    }
+
+    50% {
+        transform: translateX(-150%);
+        opacity: 0.7;
+    }
+
+    100% {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
