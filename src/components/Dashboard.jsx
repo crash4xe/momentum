@@ -13,16 +13,34 @@ import { addActivity, removeActivity } from "../services/fetchActivities";
 import { fetchData } from "../services/fetchData";
 import { updateStreak } from "../services/fetchStreaks";
 import { styleContext } from "../App";
+import Overlay from "./Overlay";
+import Profile from "./Profile";
+import Feedback from "./Feedback";
+import { AuthContext } from "../context/AuthContext";
+import { fetchProfile } from "../services/fetchProfile";
+import { Avatar } from "@mui/material";
+import { ChangePassword } from "./ChangePassword";
 
-function Dashboard({ setAuthenticated, authenticated, setIsLoggedin }) {
+function Dashboard() {
   const [task, setTask] = useState("");
   const [tasks, setTasks] = useState([]);
   const [userMenu, setUserMenu] = useState(false);
+  const [isOverlayOpen, setIsOverlayOpen] = useState(false);
+  const [currentView, setCurrentView] = useState("");
+  const { authenticated, setIsLoggedin, setAuthenticated } =
+    useContext(AuthContext);
+  const [profile, setProfile] = useState(null);
+  const [selectedOption, setSelectedOption] = useState();
+
   useEffect(() => {
     fetchData(setTasks, authenticated);
   }, [authenticated]);
 
-  const [selectedOption, setSelectedOption] = useState();
+  useEffect(() => {
+    if (authenticated) {
+      fetchProfile(authenticated, setProfile);
+    }
+  }, [authenticated]);
 
   useEffect(() => {
     if (tasks.length > 0) {
@@ -87,15 +105,24 @@ function Dashboard({ setAuthenticated, authenticated, setIsLoggedin }) {
             ) : (
               <DarkModeRounded style={iconstyles.size} />
             )}
-            <AccountCircleRounded
-              onClick={() => setUserMenu(!userMenu)}
-              style={iconstyles.size}
-            />
+            {profile ? (
+              <Avatar
+                alt={profile.name}
+                src={profile.url}
+                onClick={() => setUserMenu(!userMenu)}
+                style={iconstyles.size}
+              />
+            ) : (
+              <AccountCircleRounded
+                onClick={() => setUserMenu(!userMenu)}
+                style={iconstyles.size}
+              />
+            )}
           </div>
         </div>
         <div
           style={{
-            width: "20%",
+            minWidth: "20%",
             borderRadius: styles.borderRadius,
             right: "0",
             position: "absolute",
@@ -111,8 +138,24 @@ function Dashboard({ setAuthenticated, authenticated, setIsLoggedin }) {
               padding: "0px 20px",
             }}
           >
-            <li className="li">Profile</li>
-            <li className="li">Feedbacks</li>
+            <li
+              className="li"
+              onClick={() => {
+                setIsOverlayOpen(true);
+                setCurrentView("profile");
+              }}
+            >
+              Profile
+            </li>
+            <li
+              className="li"
+              onClick={() => {
+                setIsOverlayOpen(true);
+                setCurrentView("feedbacks");
+              }}
+            >
+              Feedback
+            </li>
             <li
               className="li"
               onClick={() => {
@@ -146,6 +189,19 @@ function Dashboard({ setAuthenticated, authenticated, setIsLoggedin }) {
           <Calendar selectedOption={selectedOption} />
         </section>
       </div>
+      <Overlay isOpen={isOverlayOpen} onClose={() => setIsOverlayOpen(false)}>
+        {currentView === "profile" && (
+          <Profile
+            profile={profile}
+            setCurrentView={setCurrentView}
+            setProfile={setProfile}
+          />
+        )}
+        {currentView === "feedbacks" && (
+          <Feedback onClose={() => setIsOverlayOpen(false)} />
+        )}
+        {currentView === "change-password" && <ChangePassword />}
+      </Overlay>
     </main>
   );
 }

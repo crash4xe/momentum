@@ -3,7 +3,11 @@ import "./Dashboard.css";
 function DashboardHeader({ tasks, selectedOption, handleSelection }) {
   return (
     <div className="dashboard-header">
-      <select className="activity-dropdown" onChange={handleSelection}>
+      <select
+        className="activity-dropdown"
+        onChange={handleSelection}
+        value={selectedOption ? selectedOption.activity_id : ""}
+      >
         {tasks.map((task) => (
           <option key={task.activity_id} value={task.activity_id}>
             {task.activity_name}

@@ -1,10 +1,11 @@
 import { Link } from "react-router-dom";
 import { loginUser, signUp } from "../services/authService";
-import { useContext, useState } from "react";
+import { useContext, useState, useEffect } from "react";
 import "./Identify.css";
 import { CheckCircleOutline } from "@mui/icons-material";
 import { styleContext } from "../App";
 import { CircularProgress } from "@mui/material";
+import { AuthContext } from "../context/AuthContext";
 
 function Login({ setAuthenticated, setIsRegistered, setIsLoggedin }) {
   const styles = useContext(styleContext);
@@ -207,6 +208,17 @@ function Register({ setIsRegistered }) {
   const [numsym, setNumsym] = useState(false);
   const [casing, setCasing] = useState(false);
   const styles = useContext(styleContext);
+
+  useEffect(() => {
+    const hasLength = password.length >= 8;
+    const hasNumSym = /[0-9]/.test(password) && /[^A-Za-z0-9]/.test(password);
+    const hasCasing = /[a-z]/.test(password) && /[A-Z]/.test(password);
+
+    setPassLen(hasLength);
+    setNumsym(hasNumSym);
+    setCasing(hasCasing);
+  }, [password, cnfpassword]);
+
   function handleSubmit(e) {
     e.preventDefault();
 
@@ -303,14 +315,6 @@ function Register({ setIsRegistered }) {
           value={password}
           onChange={(e) => {
             setPassword(e.target.value);
-            setErrors((prevState) => ({ ...prevState, cnfpassword: "" }));
-            password.length >= 7 ? setPassLen(true) : setPassLen(false);
-            /[a-z]/.test(password) && /[A-Z]/.test(password)
-              ? setCasing(true)
-              : setCasing(false);
-            /[0-9]/.test(password) && /[^A-Za-z0-9]/.test(password)
-              ? setNumsym(true)
-              : setNumsym(false);
           }}
           name="password"
           onFocus={() => {
@@ -467,13 +471,14 @@ function Register({ setIsRegistered }) {
   );
 }
 
-function Identify({ setAuthenticated, setIsLoggedin }) {
+function Identify() {
   const [isRegistered, setIsRegistered] = useState(true);
+  const auth = useContext(AuthContext);
   return isRegistered ? (
     <Login
-      setAuthenticated={setAuthenticated}
+      setAuthenticated={auth.setAuthenticated}
       setIsRegistered={setIsRegistered}
-      setIsLoggedin={setIsLoggedin}
+      setIsLoggedin={auth.setIsLoggedin}
     />
   ) : (
     <Register setIsRegistered={setIsRegistered} isRegistered={isRegistered} />
