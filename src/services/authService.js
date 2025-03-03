@@ -36,6 +36,25 @@ export const logoutUser = async () => {
   return error;
 };
 
+export const changePassword = async (newPassword) => {
+  /* Get session details */
+  // const { data: { session }, error: sessionError } = await supabase.auth.getSession();
+  // if (sessionError || !session) {
+  //   console.log('User is not authenticated');
+  //   return;
+  // }
+
+  const { error } = await supabase.auth.updateUser({
+    password: newPassword,
+  });
+
+  if (error) {
+    return error.message;
+  } else {
+    return "success";
+  }
+};
+
 export const refreshToken = async (refresh_token) => {
   const { error } = await supabase.auth.api.refreshAccessToken(refresh_token);
 

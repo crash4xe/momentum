@@ -1,19 +1,23 @@
 import Dashboard from "./components/Dashboard";
 import Identify from "./components/Identify";
 import Landing from "./components/Landing";
-import { createContext, useEffect, useState } from "react";
-import { checkLoggedIn } from "./services/authService";
+import { createContext, useContext } from "react";
+
+import { AuthContext, AuthProvider } from "./context/AuthContext";
 
 export const styleContext = createContext();
 
 function App() {
-  const [authenticated, setAuthenticated] = useState(null);
-  const [isLoggedin, setIsLoggedin] = useState(false);
+  const AuthConsumer = () => {
+    const { isLoggedin } = useContext(AuthContext);
+    return (
+      <div className="App">
+        <Landing />
 
-  useEffect(() => {
-    checkLoggedIn(setIsLoggedin, setAuthenticated);
-  }, []);
-
+        {isLoggedin ? <Dashboard /> : <Identify />}
+      </div>
+    );
+  };
   return (
     <styleContext.Provider
       value={{
@@ -31,24 +35,12 @@ function App() {
         error: "#FF7F32",
       }}
     >
-      <div className="App">
-        <Landing />
-
-        {isLoggedin ? (
-          <Dashboard
-            setAuthenticated={setAuthenticated}
-            authenticated={authenticated}
-            setIsLoggedin={setIsLoggedin}
-          />
-        ) : (
-          <Identify
-            setAuthenticated={setAuthenticated}
-            setIsLoggedin={setIsLoggedin}
-          />
-        )}
-      </div>
+      <AuthProvider>
+        <AuthConsumer />
+      </AuthProvider>
     </styleContext.Provider>
   );
-}
+  };
+
 
 export default App;

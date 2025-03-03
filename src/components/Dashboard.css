@@ -71,6 +71,11 @@
         flex-direction: column;
     }
 
+    .activity-dropdown
+    {
+         min-width: 280px;
+    }
+
 }
 
 .aside-tasklist,

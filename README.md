@@ -27,7 +27,7 @@ Momentum is a goal-oriented productivity application designed to help users trac
 
 #### Deployment & Hosting
 
-1. Frontend and Backend Hosting: Microsoft Azure
-2. CI/CD: Github actions and Azure Pipelines
-
+1. Frontend Hosting: Github using Github pages
+2. Backend: Supabase
+3. CI/CD: Github actions
 ## Features
