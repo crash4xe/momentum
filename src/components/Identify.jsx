@@ -62,7 +62,6 @@ function Login({ setAuthenticated, setIsRegistered, setIsLoggedin }) {
       className="login"
       style={{
         height: "100vh",
-        width: "720px",
         margin: "auto",
         display: "flex",
         justifyContent: "center",
@@ -79,7 +78,7 @@ function Login({ setAuthenticated, setIsRegistered, setIsLoggedin }) {
         onSubmit={handleSubmit}
       >
         <header>
-          <img src="logo.png" alt="Logo" height="70px" />
+          <img src="/logo.png" alt="logo" height="70px" />
         </header>
         <input
           type="email"
@@ -145,7 +144,7 @@ function Login({ setAuthenticated, setIsRegistered, setIsLoggedin }) {
             padding: "10px",
             boxSizing: "border-box",
             fontSize: "16px",
-            marginTop: "40px",
+            marginTop: "30px",
             backgroundColor: "#D8E9A8",
             cursor: "pointer",
           }}
@@ -161,7 +160,7 @@ function Login({ setAuthenticated, setIsRegistered, setIsLoggedin }) {
             width: "100%",
             display: "flex",
             justifyContent: "center",
-            margin: "30px 0px",
+            margin: "15px 0px",
           }}
         >
           <Link
@@ -185,7 +184,7 @@ function Login({ setAuthenticated, setIsRegistered, setIsLoggedin }) {
             padding: "10px",
             boxSizing: "border-box",
             fontSize: "16px",
-            marginTop: "40px",
+            marginTop: "25px",
             backgroundColor: "inherit",
             color: "#D8E9A8",
             cursor: "pointer",
@@ -260,7 +259,6 @@ function Register({ setIsRegistered }) {
       className="register"
       style={{
         height: "100vh",
-        width: "720px",
         margin: "auto",
         display: "flex",
         justifyContent: "center",
@@ -277,7 +275,7 @@ function Register({ setIsRegistered }) {
         onSubmit={handleSubmit}
       >
         <header>
-          <img src="logo.png" alt="Logo" height="70px" />
+          <img src="logo.png" alt="logo" height="70px" />
         </header>
         <input
           type="email"
@@ -440,7 +438,7 @@ function Register({ setIsRegistered }) {
             padding: "10px",
             boxSizing: "border-box",
             fontSize: "16px",
-            marginTop: "40px",
+            marginTop: "30px",
             backgroundColor: "#D8E9A8",
             cursor: "pointer",
           }}

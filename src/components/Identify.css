@@ -19,3 +19,10 @@
         opacity: 1;
     }
 }
+
+@media screen and (max-width: 480px) {
+    .login, .register
+    {
+        width: 380px;
+    }
+}

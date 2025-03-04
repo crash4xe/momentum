@@ -9,18 +9,10 @@ function Landing() {
   }, []);
 
   return (
-    <main
-      className="anime"
-      style={{
-        height: "100vh",
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
+    <main className="anime">
       <header>
-        <h1>{quotes[value].quote}</h1>
-        <p style={{ textAlign: "right" }}>
+        <h1 style={{ padding: "0px 20px" }}>{quotes[value].quote}</h1>
+        <p style={{ textAlign: "left", paddingLeft: "20px" }}>
           <i>{quotes[value].author}</i>
         </p>
       </header>
