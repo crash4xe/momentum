@@ -3,11 +3,7 @@ import "./Dashboard.css";
 import DashboardHeader from "./DashboardHeader";
 import Todo from "./Todo";
 import { useContext, useEffect, useState } from "react";
-import {
-  AccountCircleRounded,
-  DarkModeRounded,
-  LightModeRounded,
-} from "@mui/icons-material";
+import { AccountCircleRounded } from "@mui/icons-material";
 import { logoutUser } from "../services/authService";
 import { addActivity, removeActivity } from "../services/fetchActivities";
 import { fetchData } from "../services/fetchData";
@@ -100,11 +96,11 @@ function Dashboard() {
         >
           <h1>Momentum</h1>
           <div style={{ display: "flex", alignItems: "center" }}>
-            {true ? (
+            {/* {true ? (
               <LightModeRounded style={iconstyles.size} />
             ) : (
               <DarkModeRounded style={iconstyles.size} />
-            )}
+            )} */}
             {profile ? (
               <Avatar
                 alt={profile.name}

@@ -1,7 +1,7 @@
 import { createClient } from "@supabase/supabase-js";
 import { jwtDecode } from "jwt-decode";
 
-const supabase = createClient(
+export const supabase = createClient(
   process.env.REACT_APP_API_URL,
   process.env.REACT_APP_API_KEY
 );
@@ -56,11 +56,16 @@ export const changePassword = async (newPassword) => {
 };
 
 export const refreshToken = async (refresh_token) => {
-  const { error } = await supabase.auth.api.refreshAccessToken(refresh_token);
+  const { data, error } = await supabase.auth.api.refreshAccessToken(
+    refresh_token
+  );
 
   if (error) {
     console.log("Error refreshing token:", error.message);
+    return null;
   }
+
+  return data;
 };
 
 export function isAccessTokenExpired(access_token) {
@@ -79,10 +84,25 @@ export function checkLoggedIn(setIsLoggedin, setAuthenticated) {
     setIsLoggedin(false);
   } else {
     if (isAccessTokenExpired(sessionData.access_token)) {
-      console.log("jwt expired");
-      refreshToken(sessionData.refresh_token);
+      console.log("JWT expired, refreshing...");
+      refreshToken(sessionData.refresh_token).then((refreshedData) => {
+        if (refreshedData) {
+          localStorage.setItem("", JSON.stringify(refreshedData));
+          setAuthenticated(refreshedData);
+          setIsLoggedin(true);
+        } else {
+          setIsLoggedin(false);
+        }
+      });
+    } else {
+      setAuthenticated(sessionData);
+      setIsLoggedin(true);
     }
-    setAuthenticated(sessionData);
-    setIsLoggedin(true);
   }
+}
+
+export function autoRefreshToken(setIsLoggedin, setAuthenticated) {
+  setInterval(() => {
+    checkLoggedIn(setIsLoggedin, setAuthenticated);
+  }, 60 * 60 * 1000);
 }

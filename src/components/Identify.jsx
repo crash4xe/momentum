@@ -78,7 +78,7 @@ function Login({ setAuthenticated, setIsRegistered, setIsLoggedin }) {
         onSubmit={handleSubmit}
       >
         <header>
-          <img src="/logo.png" alt="logo" height="70px" />
+          <img src="logo.png" alt="logo" height="70px" />
         </header>
         <input
           type="email"

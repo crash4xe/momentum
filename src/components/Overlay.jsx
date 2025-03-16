@@ -3,7 +3,7 @@ import CloseIcon from "@mui/icons-material/Close";
 import { styleContext } from "../App";
 
 const Overlay = ({ isOpen, onClose, children }) => {
-const styles = useContext(styleContext);
+  const styles = useContext(styleContext);
   const overlaystyles = {
     overlay: {
       position: "fixed",
@@ -23,7 +23,7 @@ const styles = useContext(styleContext);
       padding: "20px",
       borderRadius: "8px",
       position: "relative",
-      maxWidth: "400px",
+      maxWidth: "350px",
       width: "90%",
       boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
     },
@@ -41,10 +41,7 @@ const styles = useContext(styleContext);
     isOpen && (
       <div style={overlaystyles.overlay}>
         <div style={overlaystyles.overlayContent}>
-          <button
-            style={overlaystyles.closeButton}
-            onClick={onClose}
-          >
+          <button style={overlaystyles.closeButton} onClick={onClose}>
             <CloseIcon />
           </button>
           {children}

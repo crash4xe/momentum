@@ -3,9 +3,12 @@ import { Avatar, IconButton, Menu, MenuItem, Tooltip } from "@mui/material";
 import { AuthContext } from "../context/AuthContext";
 import { styleContext } from "../App";
 import { Check } from "@mui/icons-material";
-import { removePhoto, updateProfile } from "../services/updateProfile";
-import { uploadImage } from "../services/uploadImage";
-import { data } from "react-router-dom";
+import {
+  addPhoto,
+  removePhoto,
+  updateProfile,
+} from "../services/updateProfile";
+import { deleteImage, getURL, uploadImage } from "../services/uploadImage";
 
 const Profile = ({ profile, setCurrentView, setProfile }) => {
   const styles = useContext(styleContext);
@@ -42,19 +45,20 @@ const Profile = ({ profile, setCurrentView, setProfile }) => {
     handleClose();
   }
 
-  function handleRemovePhoto() {
+  async function handleRemovePhoto() {
     if (profile.url) {
-      removePhoto(authenticated, setProfile);
+      await removePhoto(authenticated, setProfile, null);
+      await deleteImage(authenticated);
     }
     handleClose();
   }
 
-  function handlePhotoChange(e) {
+  async function handlePhotoChange(e) {
     const file = e.target.files[0];
 
-    uploadImage(file, authenticated).then((data) => {
-      console.log("image uploaded");
-    });
+    await uploadImage(file, authenticated);
+    const { imageUrl, expiry } = await getURL(authenticated);
+    await addPhoto(authenticated, setProfile, imageUrl, expiry);
   }
 
   return (
