@@ -2,8 +2,10 @@ import Dashboard from "./components/Dashboard";
 import Identify from "./components/Identify";
 import Landing from "./components/Landing";
 import { createContext, useContext } from "react";
+import { BrowserRouter, Routes, Route } from "react-router-dom";
 
 import { AuthContext, AuthProvider } from "./context/AuthContext";
+import { ForgotPassword, ResetPasswrod } from "./components/ResetPassword";
 
 export const styleContext = createContext();
 
@@ -36,11 +38,16 @@ function App() {
       }}
     >
       <AuthProvider>
-        <AuthConsumer />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/momentum" element={<AuthConsumer />} />
+            <Route path="/forgot-password" element={<ForgotPassword />} />
+            <Route path="/reset-password" element={<ResetPasswrod />} />
+          </Routes>
+        </BrowserRouter>
       </AuthProvider>
     </styleContext.Provider>
   );
-  };
-
+}
 
 export default App;

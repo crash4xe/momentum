@@ -4,7 +4,7 @@ import { styleContext } from "../App";
 import { changePassword } from "../services/authService";
 import { CircularProgress } from "@mui/material";
 
-export const ChangePassword = () => {
+export const ChangePassword = ({ reset }) => {
   const [oldPassword, setOldPassword] = useState("");
   const [password, setPassword] = useState("");
   const [cnfpassword, setCnfpassword] = useState("");
@@ -17,6 +17,7 @@ export const ChangePassword = () => {
   const [loading, setLoading] = useState(false);
   const [message, setMessage] = useState({});
   const [showButton, setShowButton] = useState(true);
+  const textContent = reset ? "Reset Password" : "Change Password";
 
   useEffect(() => {
     const hasLength = password.length >= 8;
@@ -33,10 +34,10 @@ export const ChangePassword = () => {
     let formErrors = {};
     let isValid = true;
 
-    if (!oldPassword) {
-      formErrors.oldPassword = "Old password is required";
-      isValid = false;
-    }
+    // if (!oldPassword) {
+    //   formErrors.oldPassword = "Old password is required";
+    //   isValid = false;
+    // }
 
     if (!password) {
       formErrors.password = "New password is required";
@@ -74,17 +75,18 @@ export const ChangePassword = () => {
   }
 
   return (
-    <div>
-      <form
-        onSubmit={handleSubmit}
-        style={{
-          alignItems: "center",
-          display: "flex",
-          flexDirection: "column",
-        }}
-      >
-        <h3 style={{ textAlign: "center" }}>Change Password</h3>
-        <input
+    <form
+      className={reset ? "updatepassword-form" : ""}
+      onSubmit={handleSubmit}
+      style={{
+        alignItems: "center",
+        display: "flex",
+        flexDirection: "column",
+        background: reset && styles.dark,
+      }}
+    >
+      <h3 style={{ textAlign: "center" }}>{textContent}</h3>
+      {/* <input
           type="password"
           placeholder="Old Password"
           value={oldPassword}
@@ -114,185 +116,184 @@ export const ChangePassword = () => {
           >
             {errors.oldPassword}
           </div>
-        )}
-        <input
-          type="password"
-          placeholder="New Password "
-          value={password}
-          onChange={(e) => {
-            setPassword(e.target.value);
-          }}
-          name="password"
-          onFocus={() => {
-            setErrors({});
-            setShow(!show);
-            setShowButton(true);
-          }}
-          onBlur={() => setShow(!show)}
-          style={{
-            display: "block",
-            width: "100%",
-            height: "2.5rem",
-            borderRadius: "7px",
-            border: errors.password ? `2px solid ${styles.error}` : "none",
-            outline: "none",
-            padding: "10px",
-            boxSizing: "border-box",
-            fontSize: "14px",
-            marginTop: "25px",
-            background: "#f5f5f5",
-          }}
-        />
-        {errors.password && (
-          <div
-            style={{
-              color: styles.error,
-              fontSize: styles.subfont,
-              textAlign: "left",
-              width: "100%",
-            }}
-          >
-            {errors.password}
-          </div>
-        )}
+        )} */}
+      <input
+        type="password"
+        placeholder="New Password "
+        value={password}
+        onChange={(e) => {
+          setPassword(e.target.value);
+        }}
+        name="password"
+        onFocus={() => {
+          setErrors({});
+          setShow(!show);
+          setShowButton(true);
+        }}
+        onBlur={() => setShow(!show)}
+        style={{
+          display: "block",
+          width: "100%",
+          height: "2.5rem",
+          borderRadius: "7px",
+          border: errors.password ? `2px solid ${styles.error}` : "none",
+          outline: "none",
+          padding: "10px",
+          boxSizing: "border-box",
+          fontSize: "14px",
+          marginTop: "25px",
+          background: "#f5f5f5",
+        }}
+      />
+      {errors.password && (
         <div
           style={{
+            color: styles.error,
+            fontSize: styles.subfont,
+            textAlign: "left",
             width: "100%",
-            display: show ? "block" : "none",
-            fontSize: "14 px",
-            color: "#757575",
           }}
         >
-          <ul style={{ listStyle: "none" }}>
-            <li
-              style={{
-                alignItems: "center",
-                display: "flex",
-                margin: "5px 0",
-                color: passLen ? styles.dark : "inherit",
-              }}
-            >
-              <CheckCircleOutline
-                style={{
-                  paddingRight: "5px",
-                  color: passLen ? "#4CAF50" : "inherit",
-                }}
-              />
-              Atleast 8 characters
-            </li>
-            <li
-              style={{
-                alignItems: "center",
-                display: "flex",
-                margin: "5px 0",
-                color: numsym ? styles.dark : "inherit",
-              }}
-            >
-              <CheckCircleOutline
-                style={{
-                  paddingRight: "5px",
-                  color: numsym ? "#4CAF50" : "inherit",
-                }}
-              />
-              Include numbers and symbols
-            </li>
-            <li
-              style={{
-                alignItems: "center",
-                display: "flex",
-                margin: "5px 0",
-                color: casing ? styles.dark : "inherit",
-              }}
-            >
-              <CheckCircleOutline
-                style={{
-                  paddingRight: "5px",
-                  color: casing ? "#4CAF50" : "inherit",
-                }}
-              />
-              Include capital and small letters
-            </li>
-          </ul>
+          {errors.password}
         </div>
-        <input
-          type="password"
-          placeholder="Confirm Password "
-          name="password"
-          value={cnfpassword}
-          onChange={(e) => {
-            setCnfpassword(e.target.value);
-            setErrors((prevState) => ({ ...prevState, cnfpassword: "" }));
-          }}
-          onFocus={() => {
-            setErrors({});
-            setShowButton(true);
-          }}
+      )}
+      <div
+        style={{
+          width: "100%",
+          display: show ? "block" : "none",
+          fontSize: "14 px",
+          color: "#757575",
+        }}
+      >
+        <ul style={{ listStyle: "none" }}>
+          <li
+            style={{
+              alignItems: "center",
+              display: "flex",
+              margin: "5px 0",
+              color: passLen ? styles.darkest : "inherit",
+            }}
+          >
+            <CheckCircleOutline
+              style={{
+                paddingRight: "5px",
+                color: passLen ? "#4CAF50" : "inherit",
+              }}
+            />
+            Atleast 8 characters
+          </li>
+          <li
+            style={{
+              alignItems: "center",
+              display: "flex",
+              margin: "5px 0",
+              color: numsym ? styles.darkest : "inherit",
+            }}
+          >
+            <CheckCircleOutline
+              style={{
+                paddingRight: "5px",
+                color: numsym ? "#4CAF50" : "inherit",
+              }}
+            />
+            Include numbers and symbols
+          </li>
+          <li
+            style={{
+              alignItems: "center",
+              display: "flex",
+              margin: "5px 0",
+              color: casing ? styles.darkest : "inherit",
+            }}
+          >
+            <CheckCircleOutline
+              style={{
+                paddingRight: "5px",
+                color: casing ? "#4CAF50" : "inherit",
+              }}
+            />
+            Include capital and small letters
+          </li>
+        </ul>
+      </div>
+      <input
+        type="password"
+        placeholder="Confirm Password "
+        name="password"
+        value={cnfpassword}
+        onChange={(e) => {
+          setCnfpassword(e.target.value);
+          setErrors((prevState) => ({ ...prevState, cnfpassword: "" }));
+        }}
+        onFocus={() => {
+          setErrors({});
+          setShowButton(true);
+        }}
+        style={{
+          display: "block",
+          width: "100%",
+          height: "2.5rem",
+          borderRadius: "7px",
+          border: errors.cnfpassword ? `2px solid ${styles.error}` : "none",
+          outline: "none",
+          padding: "10px",
+          boxSizing: "border-box",
+          fontSize: "14px",
+          marginTop: "25px",
+          background: "#f5f5f5",
+        }}
+      />
+      {errors.cnfpassword && (
+        <div
           style={{
-            display: "block",
+            color: styles.error,
+            fontSize: styles.subfont,
+            textAlign: "left",
             width: "100%",
+          }}
+        >
+          {errors.cnfpassword}
+        </div>
+      )}
+      {showButton ? (
+        <button
+          type="submit"
+          style={{
+            width: "50%",
             height: "2.5rem",
-            borderRadius: "7px",
-            border: errors.cnfpassword ? `2px solid ${styles.error}` : "none",
+            borderRadius: styles.borderRadius,
+            border: "none",
             outline: "none",
             padding: "10px",
             boxSizing: "border-box",
             fontSize: "14px",
-            marginTop: "25px",
-            background: "#f5f5f5",
+            marginTop: "20px",
+            backgroundColor: styles.darkgreen,
+            cursor: "pointer",
+            color: styles.light,
           }}
-        />
-        {errors.cnfpassword && (
-          <div
-            style={{
-              color: styles.error,
-              fontSize: styles.subfont,
-              textAlign: "left",
-              width: "100%",
-            }}
-          >
-            {errors.cnfpassword}
-          </div>
-        )}
-        {showButton ? (
-          <button
-            type="submit"
-            style={{
-              width: "50%",
-              height: "2.5rem",
-              borderRadius: styles.borderRadius,
-              border: "none",
-              outline: "none",
-              padding: "10px",
-              boxSizing: "border-box",
-              fontSize: "14px",
-              marginTop: "20px",
-              backgroundColor: styles.darkgreen,
-              cursor: "pointer",
-              color: styles.light,
-            }}
-          >
-            {loading ? (
-              <CircularProgress size="1.5rem" color={styles.midgreen} />
-            ) : (
-              "Change Password"
-            )}
-          </button>
-        ) : (
-          <div
-            style={{
-              color: message.msgColor,
-              marginTop: "10px",
-              padding: "10px 0px",
-              textAlign: "center",
-              width: "100%",
-              fontWeight: "bold",
-              fontSize: "14px ",
-            }}
-          >
-            {message.msg}
-          </div>
-        )}
-      </form>
-    </div>
+        >
+          {loading ? (
+            <CircularProgress size="1.5rem" color={styles.midgreen} />
+          ) : (
+            textContent
+          )}
+        </button>
+      ) : (
+        <div
+          style={{
+            color: message.msgColor,
+            marginTop: "10px",
+            padding: "10px 0px",
+            textAlign: "center",
+            width: "100%",
+            fontWeight: "bold",
+            fontSize: "14px ",
+          }}
+        >
+          {message.msg}
+        </div>
+      )}
+    </form>
   );
 };

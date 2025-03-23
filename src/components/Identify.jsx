@@ -2,10 +2,11 @@ import { Link } from "react-router-dom";
 import { loginUser, signUp } from "../services/authService";
 import { useContext, useState, useEffect } from "react";
 import "./Identify.css";
-import { CheckCircleOutline } from "@mui/icons-material";
+import { CheckCircleOutline, ErrorOutlineOutlined } from "@mui/icons-material";
 import { styleContext } from "../App";
 import { CircularProgress } from "@mui/material";
 import { AuthContext } from "../context/AuthContext";
+import Overlay from "./Overlay";
 
 function Login({ setAuthenticated, setIsRegistered, setIsLoggedin }) {
   const styles = useContext(styleContext);
@@ -69,10 +70,8 @@ function Login({ setAuthenticated, setIsRegistered, setIsLoggedin }) {
       }}
     >
       <form
+        className="login-form"
         style={{
-          width: "320px",
-          padding: "50px",
-          borderRadius: "20px",
           backgroundColor: styles.dark,
         }}
         onSubmit={handleSubmit}
@@ -164,7 +163,7 @@ function Login({ setAuthenticated, setIsRegistered, setIsLoggedin }) {
           }}
         >
           <Link
-            to="./ForgotPassword"
+            to="/forgot-password"
             style={{
               textDecoration: "none",
               color: "#f5f5f5",
@@ -190,7 +189,7 @@ function Login({ setAuthenticated, setIsRegistered, setIsLoggedin }) {
             cursor: "pointer",
           }}
         >
-          Create a account
+          Create an account
         </button>
       </form>
     </main>
@@ -206,6 +205,7 @@ function Register({ setIsRegistered }) {
   const [passLen, setPassLen] = useState(false);
   const [numsym, setNumsym] = useState(false);
   const [casing, setCasing] = useState(false);
+  const [isOverlayOpen, setIsOverlayOpen] = useState(false);
   const styles = useContext(styleContext);
 
   useEffect(() => {
@@ -242,10 +242,16 @@ function Register({ setIsRegistered }) {
     setErrors(formErrors);
 
     if (isValid && passLen && numsym && casing) {
-      signUp(email, password);
-      setEmail("");
-      setPassword("");
-      setCnfpassword("");
+      const { data, error } = signUp(email, password);
+      if (data !== null) {
+        setEmail("");
+        setPassword("");
+        setCnfpassword("");
+      } else {
+        formErrors.signup = error.message;
+        setErrors(formErrors);
+      }
+      setIsOverlayOpen(true);
     }
   }
 
@@ -265,206 +271,257 @@ function Register({ setIsRegistered }) {
         alignItems: "center",
       }}
     >
-      <form
-        style={{
-          width: "320px",
-          padding: "50px",
-          borderRadius: "20px",
-          backgroundColor: styles.dark,
-        }}
-        onSubmit={handleSubmit}
-      >
-        <header>
-          <img src="logo.png" alt="logo" height="70px" />
-        </header>
-        <input
-          type="email"
-          name="email"
-          value={email}
-          onChange={(e) => {
-            setEmail(e.target.value);
-            setErrors((prevState) => ({ ...prevState, email: "" }));
-          }}
-          onFocus={() => setErrors({})}
-          placeholder=" Email "
-          className="inline-block"
-          style={{
-            display: "block",
-            width: "100%",
-            height: "2.5rem",
-            borderRadius: "7px",
-            border: errors.email ? `2px solid ${styles.error}` : "none",
-            outline: "none",
-            padding: "10px",
-            boxSizing: "border-box",
-            fontSize: "16px",
-            marginTop: "15px",
-            background: "#f5f5f5",
-          }}
-        ></input>
-        {errors.email && (
-          <div style={{ color: styles.error, fontSize: styles.subfont }}>
-            {errors.email}
-          </div>
-        )}
-        <input
-          type="password"
-          placeholder=" Password "
-          value={password}
-          onChange={(e) => {
-            setPassword(e.target.value);
-          }}
-          name="password"
-          onFocus={() => {
-            setErrors({});
-            setShow(!show);
-          }}
-          onBlur={() => setShow(!show)}
-          style={{
-            display: "block",
-            width: "100%",
-            height: "2.5rem",
-            borderRadius: "7px",
-            border: errors.password ? `2px solid ${styles.error}` : "none",
-            outline: "none",
-            padding: "10px",
-            boxSizing: "border-box",
-            fontSize: "16px",
-            marginTop: "25px",
-            background: "#f5f5f5",
-          }}
-        />
-        {errors.password && (
-          <div style={{ color: styles.error, fontSize: styles.subfont }}>
-            {errors.password}
-          </div>
-        )}
-        <div
-          style={{
-            width: "100%",
-            display: show ? "block" : "none",
-            fontSize: "14 px",
-            color: "#757575",
-          }}
-        >
-          <ul style={{ listStyle: "none" }}>
-            <li
-              style={{
-                alignItems: "center",
-                display: "flex",
-                margin: "5px 0",
-                color: passLen ? "#BDBDBD" : "inherit",
-              }}
-            >
+      {isOverlayOpen ? (
+        <Overlay isOpen={isOverlayOpen} onClose={() => setIsOverlayOpen(false)}>
+          {errors.signup ? (
+            <div style={{ textAlign: "center" }}>
+              <ErrorOutlineOutlined
+                sx={{ color: styles.error, height: "60px", width: "60px" }}
+              ></ErrorOutlineOutlined>
+              <b style={{ fontSize: "20px", display: "block" }}>
+                Account creation failed!
+              </b>
+              <p>
+                Oops!! failed to create account. {errors.signup}. please try
+                again later, if the issue still exist{" "}
+                <a href="mailto:jayantparker99@gmail.com">contact us</a>.
+              </p>
+            </div>
+          ) : (
+            <div style={{ textAlign: "center" }}>
               <CheckCircleOutline
+                sx={{ color: styles.lightgreen, height: "60px", width: "60px" }}
+              ></CheckCircleOutline>
+              <b style={{ fontSize: "20px", display: "block" }}>
+                Account created successfully!
+              </b>
+              <p>
+                Thank you for signing up, before you login please check your
+                mail to verify you account and get started
+              </p>
+              <button
+                onClick={handleRegister}
                 style={{
-                  paddingRight: "5px",
-                  color: passLen ? "#4CAF50" : "inherit",
+                  width: "80%",
+                  height: "2.5rem",
+                  borderRadius: "20px",
+                  border: "none",
+                  outline: "none",
+                  padding: "10px",
+                  boxSizing: "border-box",
+                  fontSize: "16px",
+                  fontWeight: "bold",
+                  marginTop: "10px",
+                  backgroundColor: styles.midgreen,
+                  cursor: "pointer",
+                  color: styles.light,
                 }}
-              />
-              Atleast 8 characters
-            </li>
-            <li
-              style={{
-                alignItems: "center",
-                display: "flex",
-                margin: "5px 0",
-                color: numsym ? "#BDBDBD" : "inherit",
-              }}
-            >
-              <CheckCircleOutline
-                style={{
-                  paddingRight: "5px",
-                  color: numsym ? "#4CAF50" : "inherit",
-                }}
-              />
-              Include numbers and symbols
-            </li>
-            <li
-              style={{
-                alignItems: "center",
-                display: "flex",
-                margin: "5px 0",
-                color: casing ? "#BDBDBD" : "inherit",
-              }}
-            >
-              <CheckCircleOutline
-                style={{
-                  paddingRight: "5px",
-                  color: casing ? "#4CAF50" : "inherit",
-                }}
-              />
-              Include capital and small letters
-            </li>
-          </ul>
-        </div>
-        <input
-          type="password"
-          placeholder=" Confirm Password "
-          name="password"
-          value={cnfpassword}
-          onChange={(e) => {
-            setCnfpassword(e.target.value);
-            setErrors((prevState) => ({ ...prevState, cnfpassword: "" }));
-          }}
-          onFocus={() => setErrors({})}
+              >
+                Back to Login
+              </button>
+            </div>
+          )}
+        </Overlay>
+      ) : (
+        <form
+          className="register-form"
           style={{
-            display: "block",
-            width: "100%",
-            height: "2.5rem",
-            borderRadius: "7px",
-            border: errors.cnfpassword ? `2px solid ${styles.error}` : "none",
-            outline: "none",
-            padding: "10px",
-            boxSizing: "border-box",
-            fontSize: "16px",
-            marginTop: "25px",
-            background: "#f5f5f5",
+            backgroundColor: styles.dark,
           }}
-        />
-        {errors.cnfpassword && (
-          <div style={{ color: styles.error, fontSize: styles.subfont }}>
-            {errors.cnfpassword}
+          onSubmit={handleSubmit}
+        >
+          <header>
+            <img src="logo.png" alt="logo" height="70px" />
+          </header>
+          <input
+            type="email"
+            name="email"
+            value={email}
+            onChange={(e) => {
+              setEmail(e.target.value);
+              setErrors((prevState) => ({ ...prevState, email: "" }));
+            }}
+            onFocus={() => setErrors({})}
+            placeholder=" Email "
+            className="inline-block"
+            style={{
+              display: "block",
+              width: "100%",
+              height: "2.5rem",
+              borderRadius: "7px",
+              border: errors.email ? `2px solid ${styles.error}` : "none",
+              outline: "none",
+              padding: "10px",
+              boxSizing: "border-box",
+              fontSize: "16px",
+              marginTop: "15px",
+              background: "#f5f5f5",
+            }}
+          ></input>
+          {errors.email && (
+            <div style={{ color: styles.error, fontSize: styles.subfont }}>
+              {errors.email}
+            </div>
+          )}
+          <input
+            type="password"
+            placeholder=" Password "
+            value={password}
+            onChange={(e) => {
+              setPassword(e.target.value);
+            }}
+            name="password"
+            onFocus={() => {
+              setErrors({});
+              setShow(!show);
+            }}
+            onBlur={() => setShow(!show)}
+            style={{
+              display: "block",
+              width: "100%",
+              height: "2.5rem",
+              borderRadius: "7px",
+              border: errors.password ? `2px solid ${styles.error}` : "none",
+              outline: "none",
+              padding: "10px",
+              boxSizing: "border-box",
+              fontSize: "16px",
+              marginTop: "25px",
+              background: "#f5f5f5",
+            }}
+          />
+          {errors.password && (
+            <div style={{ color: styles.error, fontSize: styles.subfont }}>
+              {errors.password}
+            </div>
+          )}
+          <div
+            style={{
+              width: "100%",
+              display: show ? "block" : "none",
+              fontSize: "14 px",
+              color: "#757575",
+            }}
+          >
+            <ul style={{ listStyle: "none" }}>
+              <li
+                style={{
+                  alignItems: "center",
+                  display: "flex",
+                  margin: "5px 0",
+                  color: passLen ? "#BDBDBD" : "inherit",
+                }}
+              >
+                <CheckCircleOutline
+                  style={{
+                    paddingRight: "5px",
+                    color: passLen ? "#4CAF50" : "inherit",
+                  }}
+                />
+                Atleast 8 characters
+              </li>
+              <li
+                style={{
+                  alignItems: "center",
+                  display: "flex",
+                  margin: "5px 0",
+                  color: numsym ? "#BDBDBD" : "inherit",
+                }}
+              >
+                <CheckCircleOutline
+                  style={{
+                    paddingRight: "5px",
+                    color: numsym ? "#4CAF50" : "inherit",
+                  }}
+                />
+                Include numbers and symbols
+              </li>
+              <li
+                style={{
+                  alignItems: "center",
+                  display: "flex",
+                  margin: "5px 0",
+                  color: casing ? "#BDBDBD" : "inherit",
+                }}
+              >
+                <CheckCircleOutline
+                  style={{
+                    paddingRight: "5px",
+                    color: casing ? "#4CAF50" : "inherit",
+                  }}
+                />
+                Include capital and small letters
+              </li>
+            </ul>
           </div>
-        )}
-        <button
-          type="submit"
-          style={{
-            width: "100%",
-            height: "2.5rem",
-            borderRadius: "20px",
-            border: "none",
-            outline: "none",
-            padding: "10px",
-            boxSizing: "border-box",
-            fontSize: "16px",
-            marginTop: "30px",
-            backgroundColor: "#D8E9A8",
-            cursor: "pointer",
-          }}
-        >
-          Sign Up
-        </button>
-        <button
-          onClick={handleRegister}
-          style={{
-            width: "100%",
-            height: "2.5rem",
-            borderRadius: "20px",
-            border: "2px solid #D8E9A8",
-            outline: "none",
-            padding: "10px",
-            boxSizing: "border-box",
-            fontSize: "16px",
-            marginTop: "40px",
-            backgroundColor: "inherit",
-            color: "#D8E9A8",
-            cursor: "pointer",
-          }}
-        >
-          Already have a account
-        </button>
-      </form>
+          <input
+            type="password"
+            placeholder=" Confirm Password "
+            name="password"
+            value={cnfpassword}
+            onChange={(e) => {
+              setCnfpassword(e.target.value);
+              setErrors((prevState) => ({ ...prevState, cnfpassword: "" }));
+            }}
+            onFocus={() => setErrors({})}
+            style={{
+              display: "block",
+              width: "100%",
+              height: "2.5rem",
+              borderRadius: "7px",
+              border: errors.cnfpassword ? `2px solid ${styles.error}` : "none",
+              outline: "none",
+              padding: "10px",
+              boxSizing: "border-box",
+              fontSize: "16px",
+              marginTop: "25px",
+              background: "#f5f5f5",
+            }}
+          />
+          {errors.cnfpassword && (
+            <div style={{ color: styles.error, fontSize: styles.subfont }}>
+              {errors.cnfpassword}
+            </div>
+          )}
+          <button
+            type="submit"
+            style={{
+              width: "100%",
+              height: "2.5rem",
+              borderRadius: "20px",
+              border: "none",
+              outline: "none",
+              padding: "10px",
+              boxSizing: "border-box",
+              fontSize: "16px",
+              marginTop: "30px",
+              backgroundColor: "#D8E9A8",
+              cursor: "pointer",
+            }}
+          >
+            Sign Up
+          </button>
+          <button
+            onClick={handleRegister}
+            style={{
+              width: "100%",
+              height: "2.5rem",
+              borderRadius: "20px",
+              border: "2px solid #D8E9A8",
+              outline: "none",
+              padding: "10px",
+              boxSizing: "border-box",
+              fontSize: "16px",
+              marginTop: "40px",
+              backgroundColor: "inherit",
+              color: "#D8E9A8",
+              cursor: "pointer",
+            }}
+          >
+            Already have a account
+          </button>
+        </form>
+      )}
     </main>
   );
 }

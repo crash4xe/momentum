@@ -3,6 +3,13 @@
     animation: slideRight 0.4s ease-in-out;
 }
 
+.login-form, .register-form, .resetpassword-form, .updatepassword-form
+{
+    width: 340px;
+    padding: 30px;
+    border-radius: 20px;
+}
+
 @keyframes slideRight {
     0% {
         transform: translateX(-50%);
@@ -21,8 +28,8 @@
 }
 
 @media screen and (max-width: 480px) {
-    .login, .register
+    .login, .register, .reset-password, .update-password
     {
-        width: 380px;
+        width: 360px;
     }
 }

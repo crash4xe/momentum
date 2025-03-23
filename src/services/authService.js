@@ -55,6 +55,14 @@ export const changePassword = async (newPassword) => {
   }
 };
 
+export const resetPassword = async (email) => {
+  const { data, error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: "https://crash4xe.github.io/momentum/reset-password",
+  });
+
+  return { data, error };
+};
+
 export const refreshToken = async (refresh_token) => {
   const { data, error } = await supabase.auth.api.refreshAccessToken(
     refresh_token
