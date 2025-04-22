@@ -1,35 +1,73 @@
-.login,
-.register {
-    animation: slideRight 0.4s ease-in-out;
-}
-
-.login-form, .register-form, .resetpassword-form, .updatepassword-form
-{
+.login-form,
+.register-form,
+.resetpassword-form,
+.updatepassword-form {
     width: 340px;
     padding: 30px;
     border-radius: 20px;
 }
 
-@keyframes slideRight {
-    0% {
-        transform: translateX(-50%);
+
+@keyframes flipInY {
+    from {
+        transform: perspective(600px) rotateY(120deg);
         opacity: 0;
     }
 
-    50% {
-        transform: translateX(-150%);
-        opacity: 0.7;
-    }
-
-    100% {
-        transform: translateX(0);
+    to {
+        transform: perspective(600px) rotateY(0deg);
         opacity: 1;
     }
 }
 
+/* Apply animation */
+.login,
+.register,
+.reset-password {
+    animation: flipInY 0.4s ease-out;
+    backface-visibility: hidden;
+}
+
+
 @media screen and (max-width: 480px) {
-    .login, .register, .reset-password, .update-password
-    {
+
+    .login,
+    .register,
+    .reset-password,
+    .update-password {
         width: 360px;
     }
+}
+
+/* Overlay animation */
+/* Fade-in for backdrop */
+@keyframes fadeInOverlay {
+    from {
+        opacity: 0;
+    }
+
+    to {
+        opacity: 1;
+    }
+}
+
+/* Pop-in for modal */
+@keyframes popInModal {
+    0% {
+        opacity: 0;
+        transform: scale(0.9);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+.animated-overlay {
+    animation: fadeInOverlay 0.3s ease-out forwards;
+}
+
+.animated-modal {
+    animation: popInModal 0.3s ease-out forwards;
 }

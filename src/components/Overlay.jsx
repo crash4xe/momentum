@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import CloseIcon from "@mui/icons-material/Close";
 import { styleContext } from "../App";
+import "./Identify.css";
 
 const Overlay = ({ isOpen, onClose, children }) => {
   const styles = useContext(styleContext);
@@ -39,8 +40,12 @@ const Overlay = ({ isOpen, onClose, children }) => {
   };
   return (
     isOpen && (
-      <div style={overlaystyles.overlay}>
-        <div style={overlaystyles.overlayContent}>
+      <div className="animated-overlay" style={overlaystyles.overlay}>
+        <div
+          className="animated-modal"
+          style={overlaystyles.overlayContent}
+          onClick={(e) => e.stopPropagation()}
+        >
           <button style={overlaystyles.closeButton} onClick={onClose}>
             <CloseIcon />
           </button>

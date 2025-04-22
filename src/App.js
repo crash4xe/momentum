@@ -35,12 +35,13 @@ function App() {
         font: "14px",
         subfont: "13px",
         error: "#FF7F32",
+        lightest: "#f5f5f5",
       }}
     >
       <AuthProvider>
         <BrowserRouter>
           <Routes>
-            <Route path="/momentum" element={<AuthConsumer />} />
+            <Route path="momentum" element={<AuthConsumer />} />
             <Route path="/forgot-password" element={<ForgotPassword />} />
             <Route path="/reset-password" element={<ResetPasswrod />} />
           </Routes>

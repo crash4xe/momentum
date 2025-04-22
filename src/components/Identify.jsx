@@ -77,7 +77,11 @@ function Login({ setAuthenticated, setIsRegistered, setIsLoggedin }) {
         onSubmit={handleSubmit}
       >
         <header>
-          <img src="logo.png" alt="logo" height="70px" />
+          <img
+            src={`${process.env.PUBLIC_URL}/logo.png`}
+            alt="logo"
+            height="70px"
+          />
         </header>
         <input
           type="email"
@@ -169,7 +173,7 @@ function Login({ setAuthenticated, setIsRegistered, setIsLoggedin }) {
               color: "#f5f5f5",
             }}
           >
-            Forgot Password ?
+            Forgot Password?
           </Link>
         </div>
         <button
@@ -282,8 +286,8 @@ function Register({ setIsRegistered }) {
                 Account creation failed!
               </b>
               <p>
-                Oops!! failed to create account. {errors.signup}. please try
-                again later, if the issue still exist{" "}
+                Oops!! failed to create account: {errors.signup}. please try
+                again later, if the issue still exist
                 <a href="mailto:jayantparker99@gmail.com">contact us</a>.
               </p>
             </div>
@@ -297,7 +301,7 @@ function Register({ setIsRegistered }) {
               </b>
               <p>
                 Thank you for signing up, before you login please check your
-                mail to verify you account and get started
+                mail to verify your account and get started
               </p>
               <button
                 onClick={handleRegister}
@@ -310,7 +314,6 @@ function Register({ setIsRegistered }) {
                   padding: "10px",
                   boxSizing: "border-box",
                   fontSize: "16px",
-                  fontWeight: "bold",
                   marginTop: "10px",
                   backgroundColor: styles.midgreen,
                   cursor: "pointer",
@@ -331,7 +334,11 @@ function Register({ setIsRegistered }) {
           onSubmit={handleSubmit}
         >
           <header>
-            <img src="logo.png" alt="logo" height="70px" />
+            <img
+              src={`${process.env.PUBLIC_URL}/logo.png`}
+              alt="logo"
+              height="70px"
+            />
           </header>
           <input
             type="email"
@@ -518,7 +525,7 @@ function Register({ setIsRegistered }) {
               cursor: "pointer",
             }}
           >
-            Already have a account
+            Already have an account
           </button>
         </form>
       )}
