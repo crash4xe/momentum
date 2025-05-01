@@ -108,7 +108,7 @@ function ForgotPassword() {
           }}
           onSubmit={handleSubmit}
         >
-          <header style={{ textAlign: "center" }}>
+          <header>
             <img
               src={`${process.env.PUBLIC_URL}/logo.png`}
               alt="logo"
@@ -188,7 +188,7 @@ function ForgotPassword() {
   );
 }
 
-function ResetPasswrod() {
+function ResetPassword() {
   return (
     <main
       className="update-password"
@@ -205,4 +205,4 @@ function ResetPasswrod() {
   );
 }
 
-export { ForgotPassword, ResetPasswrod };
+export { ForgotPassword, ResetPassword };

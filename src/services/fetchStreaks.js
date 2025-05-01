@@ -1,9 +1,32 @@
 import { fetchData } from "./fetchData";
 
+// export async function fetchStreak(setStreaks, authenticated) {
+//   try {
+//     const response = await fetch(
+//       `${process.env.REACT_APP_API_URL}/rest/v1/streaks`,
+//       {
+//         method: "GET",
+//         headers: {
+//           Authorization: `Bearer ${authenticated.access_token}`,
+//           apikey: process.env.REACT_APP_API_KEY,
+//           "Content-Type": "application/json",
+//         },
+//       }
+//     );
+
+//     if (response.ok) {
+//       const data = await response.json();
+//       setStreaks(data);
+//     }
+//   } catch (error) {
+//     console.log(error);
+//   }
+// }
+
 export async function fetchStreak(setStreaks, authenticated) {
   try {
     const response = await fetch(
-      `${process.env.REACT_APP_API_URL}/rest/v1/streaks`,
+      `${process.env.REACT_APP_API_URL}/rest/v1/streak_view`,
       {
         method: "GET",
         headers: {
@@ -17,6 +40,8 @@ export async function fetchStreak(setStreaks, authenticated) {
     if (response.ok) {
       const data = await response.json();
       setStreaks(data);
+    } else {
+      throw new Error(response.statusText);
     }
   } catch (error) {
     console.log(error);
@@ -53,7 +78,7 @@ export async function createStreak(authenticated, id) {
   }
 }
 
-export async function updateStreak(task, authenticated, setTasks) {
+export async function updateStreak(task, authenticated, setTasks, setStreaks) {
   const today = new Date();
   const todayDate = today.toLocaleDateString();
   let payload = {};
@@ -101,6 +126,7 @@ export async function updateStreak(task, authenticated, setTasks) {
       throw new Error(response.statusText);
     } else {
       fetchData(setTasks, authenticated);
+      fetchStreak(setStreaks, authenticated);
     }
   } catch (error) {
     console.log(error);

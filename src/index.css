@@ -8,13 +8,6 @@ body {
 
   background-color: var(--darkest);
   color: var(--light);
-  /* overflow: hidden;
-  ::-webkit-scrollbar
-  {
-    display: none;
-  }
-  scrollbar-width: none;
-  -ms-overflow-style: none; */
 }
 
 
@@ -26,7 +19,7 @@ body {
   --midgreen: #1E5128;
   --lightgreen: #4E9F3D;
   --lightestgreen: #D8E9A8;
-  --light: rgba(245, 245, 245, 0.7); 
+  --light: rgba(245, 245, 245, 0.7);
   --grey: rgba(224, 224, 224, 0.2);
   --borderRadius: 7px;
   --font: "14px";

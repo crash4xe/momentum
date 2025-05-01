@@ -1,5 +1,5 @@
 import { createClient } from "@supabase/supabase-js";
-import { jwtDecode } from "jwt-decode";
+// import { jwtDecode } from "jwt-decode";
 
 export const supabase = createClient(
   process.env.REACT_APP_API_URL,
@@ -11,6 +11,12 @@ export const signUp = async (email, password) => {
     email: email,
     password: password,
   });
+
+  // if (data.user) {
+  //   const { profileData, profileError } = await supabase
+  //     .from("profiles")
+  //     .insert({ uid: data.user.id });
+  // }
 
   return { data, error };
 };
@@ -63,54 +69,49 @@ export const resetPassword = async (email) => {
   return { data, error };
 };
 
-export const refreshToken = async (refresh_token) => {
-  const { data, error } = await supabase.auth.api.refreshAccessToken(
-    refresh_token
-  );
+// Supbase onAuthStateChange is used as listener, manual refresh not required
+// export const refreshToken = async (refresh_token) => {
+//   const { data, error } = await supabase.auth.api.refreshAccessToken(
+//     refresh_token
+//   );
 
-  if (error) {
-    console.log("Error refreshing token:", error.message);
-    return null;
-  }
+//   if (error) {
+//     console.log("Error refreshing token:", error.message);
+//     return null;
+//   }
 
-  return data;
-};
+//   return data;
+// };
 
-export function isAccessTokenExpired(access_token) {
-  const decodedToken = jwtDecode(access_token);
-  const currentTime = Math.floor(Date.now() / 1000);
+// export function isAccessTokenExpired(access_token) {
+//   const decodedToken = jwtDecode(access_token);
+//   const currentTime = Math.floor(Date.now() / 1000);
 
-  return decodedToken.exp < currentTime;
-}
+//   return decodedToken.exp < currentTime;
+// }
 
-export function checkLoggedIn(setIsLoggedin, setAuthenticated) {
-  const session = localStorage.getItem("sb-kkgjertrzzugmncqisbj-auth-token");
+// export function checkLoggedIn(setIsLoggedin, setAuthenticated) {
+//   const session = localStorage.getItem("sb-kkgjertrzzugmncqisbj-auth-token");
 
-  const sessionData = session ? JSON.parse(session) : null;
+//   const sessionData = session ? JSON.parse(session) : null;
 
-  if (sessionData === null) {
-    setIsLoggedin(false);
-  } else {
-    if (isAccessTokenExpired(sessionData.access_token)) {
-      console.log("JWT expired, refreshing...");
-      refreshToken(sessionData.refresh_token).then((refreshedData) => {
-        if (refreshedData) {
-          localStorage.setItem("", JSON.stringify(refreshedData));
-          setAuthenticated(refreshedData);
-          setIsLoggedin(true);
-        } else {
-          setIsLoggedin(false);
-        }
-      });
-    } else {
-      setAuthenticated(sessionData);
-      setIsLoggedin(true);
-    }
-  }
-}
-
-export function autoRefreshToken(setIsLoggedin, setAuthenticated) {
-  setInterval(() => {
-    checkLoggedIn(setIsLoggedin, setAuthenticated);
-  }, 60 * 60 * 1000);
-}
+//   if (sessionData === null) {
+//     setIsLoggedin(false);
+//   } else {
+//     if (isAccessTokenExpired(sessionData.access_token)) {
+//       console.log("JWT expired, refreshing...");
+//       refreshToken(sessionData.refresh_token).then((refreshedData) => {
+//         if (refreshedData) {
+//           localStorage.setItem("", JSON.stringify(refreshedData));
+//           setAuthenticated(refreshedData);
+//           setIsLoggedin(true);
+//         } else {
+//           setIsLoggedin(false);
+//         }
+//       });
+//     } else {
+//       setAuthenticated(sessionData);
+//       setIsLoggedin(true);
+//     }
+//   }
+// }

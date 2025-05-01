@@ -7,7 +7,7 @@ import { AccountCircleRounded } from "@mui/icons-material";
 import { logoutUser } from "../services/authService";
 import { addActivity, removeActivity } from "../services/fetchActivities";
 import { fetchData } from "../services/fetchData";
-import { updateStreak } from "../services/fetchStreaks";
+import { updateStreak, fetchStreak } from "../services/fetchStreaks";
 import { styleContext } from "../App";
 import Overlay from "./Overlay";
 import Profile from "./Profile";
@@ -27,9 +27,14 @@ function Dashboard() {
     useContext(AuthContext);
   const [profile, setProfile] = useState(null);
   const [selectedOption, setSelectedOption] = useState();
+  const [streaks, setStreaks] = useState([]);
 
   useEffect(() => {
     fetchData(setTasks, authenticated);
+  }, [authenticated]);
+
+  useEffect(() => {
+    fetchStreak(setStreaks, authenticated);
   }, [authenticated]);
 
   useEffect(() => {
@@ -59,7 +64,7 @@ function Dashboard() {
 
   function handleTaskCompletion(task) {
     if (!task.completed) {
-      updateStreak(task, authenticated, setTasks);
+      updateStreak(task, authenticated, setTasks, setStreaks);
     }
   }
 
@@ -117,13 +122,9 @@ function Dashboard() {
           </div>
         </div>
         <div
+          className="user-menu"
           style={{
-            minWidth: "20%",
             borderRadius: styles.borderRadius,
-            right: "0",
-            position: "absolute",
-            zIndex: "1",
-            backgroundColor: styles.darkgreen,
             display: userMenu ? "block" : "none",
           }}
         >
@@ -182,7 +183,7 @@ function Dashboard() {
             selectedOption={selectedOption}
             handleSelection={handleSelection}
           />
-          <Calendar selectedOption={selectedOption} />
+          <Calendar selectedOption={selectedOption} streaks={streaks} />
         </section>
       </div>
       <Overlay isOpen={isOverlayOpen} onClose={() => setIsOverlayOpen(false)}>

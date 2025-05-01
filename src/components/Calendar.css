@@ -27,4 +27,21 @@
   .calendar {
     grid-template-columns: repeat(1, 1fr);
   }
+  .carousel-container {
+    display: flex;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scroll-behavior: smooth;
+    width: 100%;
+  }
+
+  .month {
+    scroll-snap-align: center;
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+
+  .calendar {
+    display: block; /* Overrides flex wrap for mobile */
+  }
 }

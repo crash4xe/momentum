@@ -1,11 +1,12 @@
 import Dashboard from "./components/Dashboard";
 import Identify from "./components/Identify";
 import Landing from "./components/Landing";
+import NotFound from "./components/NotFound";
 import { createContext, useContext } from "react";
-import { BrowserRouter, Routes, Route } from "react-router-dom";
+import { Routes, Route } from "react-router-dom";
 
 import { AuthContext, AuthProvider } from "./context/AuthContext";
-import { ForgotPassword, ResetPasswrod } from "./components/ResetPassword";
+import { ForgotPassword, ResetPassword } from "./components/ResetPassword";
 
 export const styleContext = createContext();
 
@@ -14,9 +15,7 @@ function App() {
     const { isLoggedin } = useContext(AuthContext);
     return (
       <div className="App">
-        <Landing />
-
-        {isLoggedin ? <Dashboard /> : <Identify />}
+        <Landing /> {isLoggedin ? <Dashboard /> : <Identify />}
       </div>
     );
   };
@@ -39,13 +38,12 @@ function App() {
       }}
     >
       <AuthProvider>
-        <BrowserRouter>
-          <Routes>
-            <Route path="momentum" element={<AuthConsumer />} />
-            <Route path="/forgot-password" element={<ForgotPassword />} />
-            <Route path="/reset-password" element={<ResetPasswrod />} />
-          </Routes>
-        </BrowserRouter>
+        <Routes>
+          <Route path="/momentum" element={<AuthConsumer />} />
+          <Route path="/forgot-password" element={<ForgotPassword />} />
+          <Route path="/reset-password" element={<ResetPassword />} />
+          <Route path="*" element={<NotFound />} />
+        </Routes>
       </AuthProvider>
     </styleContext.Provider>
   );

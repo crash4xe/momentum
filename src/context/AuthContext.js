@@ -1,7 +1,7 @@
 import { createContext } from "react";
 
 import { useEffect, useState } from "react";
-import { checkLoggedIn } from "../services/authService";
+import { supabase } from "../services/authService";
 
 export const AuthContext = createContext();
 
@@ -10,8 +10,32 @@ export const AuthProvider = ({ children }) => {
   const [isLoggedin, setIsLoggedin] = useState(false);
 
   useEffect(() => {
-    checkLoggedIn(setIsLoggedin, setAuthenticated);
+    const session = supabase.auth.getSession().then(({ data: { session } }) => {
+      if (session) {
+        setAuthenticated(session);
+        setIsLoggedin(true);
+      } else {
+        setIsLoggedin(false);
+      }
+    });
+
+    const { data: listener } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        if (session) {
+          setAuthenticated(session);
+          setIsLoggedin(true);
+        } else {
+          setAuthenticated(null);
+          setIsLoggedin(false);
+        }
+      }
+    );
+
+    return () => {
+      listener.subscription.unsubscribe();
+    };
   }, []);
+
   return (
     <AuthContext.Provider
       value={{ authenticated, isLoggedin, setAuthenticated, setIsLoggedin }}

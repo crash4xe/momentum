@@ -24,7 +24,7 @@ const Overlay = ({ isOpen, onClose, children }) => {
       padding: "20px",
       borderRadius: "8px",
       position: "relative",
-      maxWidth: "350px",
+      maxWidth: "320px",
       width: "90%",
       boxShadow: "0 2px 10px rgba(0, 0, 0, 0.1)",
     },

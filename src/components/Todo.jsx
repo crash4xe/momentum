@@ -69,7 +69,7 @@ function Todo({
             width: "100px",
           }}
         >
-          Add Task
+          Add
         </button>
       </div>
       <List>
@@ -80,8 +80,9 @@ function Todo({
               textDecoration: task.completed ? "line-through" : "",
               color: styles.light,
               "&:hover": {
-                border: `0.5px solid ${styles.light}`,
-                borderRadius: styles.borderRadius,
+                transform: "scale(1.02)",
+                backgroundImage:
+                  "linear-gradient(to top, rgba(255,255,255,0.05  ), rgba(255,255,255,0))",
               },
             }}
           >

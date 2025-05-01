@@ -210,6 +210,7 @@ function Register({ setIsRegistered }) {
   const [numsym, setNumsym] = useState(false);
   const [casing, setCasing] = useState(false);
   const [isOverlayOpen, setIsOverlayOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const styles = useContext(styleContext);
 
   useEffect(() => {
@@ -222,7 +223,7 @@ function Register({ setIsRegistered }) {
     setCasing(hasCasing);
   }, [password, cnfpassword]);
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
 
     let formErrors = {};
@@ -246,7 +247,8 @@ function Register({ setIsRegistered }) {
     setErrors(formErrors);
 
     if (isValid && passLen && numsym && casing) {
-      const { data, error } = signUp(email, password);
+      setLoading(true);
+      const { data, error } = await signUp(email, password);
       if (data !== null) {
         setEmail("");
         setPassword("");
@@ -255,6 +257,7 @@ function Register({ setIsRegistered }) {
         formErrors.signup = error.message;
         setErrors(formErrors);
       }
+      setLoading(false);
       setIsOverlayOpen(true);
     }
   }
@@ -506,7 +509,11 @@ function Register({ setIsRegistered }) {
               cursor: "pointer",
             }}
           >
-            Sign Up
+            {loading ? (
+              <CircularProgress size="1.5rem" color={styles.midgreen} />
+            ) : (
+              "Sign up"
+            )}
           </button>
           <button
             onClick={handleRegister}

@@ -24,14 +24,14 @@ export const getURL = async (authenticated) => {
   try {
     const { data, error } = await supabase.storage
       .from("momentum-profiles")
-      .createSignedUrl(`${authenticated.user.id}`, 86400);
+      .createSignedUrl(`${authenticated.user.id}`, 7 * 86400);
     if (error) {
       throw new Error(error.message);
     }
 
     const today = new Date();
     const futureDate = new Date(today);
-    futureDate.setDate(today.getDate() + 1);
+    futureDate.setDate(today.getDate() + 7);
 
     const formattedDate = futureDate.toISOString().split("T")[0];
 

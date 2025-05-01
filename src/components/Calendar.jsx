@@ -1,14 +1,14 @@
 import "./Calendar.css";
 import { useState } from "react";
 
-function Calendar({ selectedOption }) {
+function Calendar({ selectedOption, streaks }) {
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
-  const dateRanges = [
-    {
-      start: selectedOption ? selectedOption.start_date : "",
-      end: selectedOption ? selectedOption.end_date : "",
-    },
-  ];
+
+  const dateRanges = selectedOption
+    ? streaks
+        .filter((streak) => streak.activity_id === selectedOption.activity_id)
+        .map((streak) => ({ start: streak.start_date, end: streak.end_date }))
+    : [];
 
   const isWithinDateRange = (day, monthIndex) => {
     if (!day) return false;
@@ -105,6 +105,7 @@ function Calendar({ selectedOption }) {
 
   const renderYear = () => {
     const months = Array.from({ length: 12 }, (_, i) => renderMonth(i));
+
     return months;
   };
 
