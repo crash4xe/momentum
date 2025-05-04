@@ -1,5 +1,4 @@
 import { createClient } from "@supabase/supabase-js";
-// import { jwtDecode } from "jwt-decode";
 
 export const supabase = createClient(
   process.env.REACT_APP_API_URL,
@@ -10,13 +9,10 @@ export const signUp = async (email, password) => {
   const { data, error } = await supabase.auth.signUp({
     email: email,
     password: password,
+    options: {
+      emailRedirectTo: "https://crash4xe.github.io/momentum/",
+    },
   });
-
-  // if (data.user) {
-  //   const { profileData, profileError } = await supabase
-  //     .from("profiles")
-  //     .insert({ uid: data.user.id });
-  // }
 
   return { data, error };
 };
