@@ -16,6 +16,7 @@ function Todo({
   handleRemoveTask,
   handleTaskChange,
   handleTaskCompletion,
+  handleSelection,
   task,
   tasks,
 }) {
@@ -76,6 +77,9 @@ function Todo({
         {tasks.map((task) => (
           <ListItem
             key={task.activity_id}
+            onClick={() =>
+              handleSelection({ target: { value: task.activity_id } })
+            }
             sx={{
               textDecoration: task.completed ? "line-through" : "",
               color: styles.light,

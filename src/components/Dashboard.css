@@ -13,6 +13,47 @@
     /* Outer shadow with green tint */ 0px 30px 60px -30px rgba(0, 0, 0, 0.3);
 }
 
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  padding: 5px 50px;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.activity-dropdown {
+  border: none;
+  outline: none;
+  border-radius: 7px;
+  font-size: 15px;
+  height: 2.5rem;
+  background-color: var(--light);
+  padding: 0px 20px;
+}
+
+.aside-tasklist,
+header {
+  position: relative;
+}
+
+.li {
+  padding: 10px 0px;
+}
+
+.li:hover {
+  background-color: var(--dark);
+  border-radius: 7px;
+  transform: scale(1.1);
+  cursor: pointer;
+}
+
+.user-menu {
+  right: 0;
+  position: absolute;
+  z-index: 1;
+  background-color: var(--darkgreen);
+}
+
 /* PC */
 @media (min-width: 1200px) {
   .dashboard-main {
@@ -77,47 +118,11 @@
   }
 
   .activity-dropdown {
+    display: none;
     min-width: 100%;
   }
-}
 
-.dashboard-header {
-  display: flex;
-  justify-content: space-between;
-  padding: 5px 50px;
-  align-items: center;
-  margin-top: 10px;
-}
-
-.activity-dropdown {
-  border: none;
-  outline: none;
-  border-radius: 7px;
-  font-size: 15px;
-  height: 2.5rem;
-  background-color: var(--light);
-  padding: 0px 20px;
-}
-
-.aside-tasklist,
-header {
-  position: relative;
-}
-
-.li {
-  padding: 10px 0px;
-}
-
-.li:hover {
-  background-color: var(--dark);
-  border-radius: 7px;
-  transform: scale(1.1);
-  cursor: pointer;
-}
-
-.user-menu {
-  right: 0;
-  position: absolute;
-  z-index: 1;
-  background-color: var(--darkgreen);
+  .dashboard-header {
+    padding: 0;
+  }
 }

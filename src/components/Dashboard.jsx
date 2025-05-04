@@ -173,6 +173,7 @@ function Dashboard() {
             handleRemoveTask={handleRemoveTask}
             handleTaskChange={handleTaskChange}
             handleTaskCompletion={handleTaskCompletion}
+            handleSelection={handleSelection}
             task={task}
             tasks={tasks}
           />
