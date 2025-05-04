@@ -1,8 +1,22 @@
 import "./Calendar.css";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 function Calendar({ selectedOption, streaks }) {
   const [currentYear, setCurrentYear] = useState(new Date().getFullYear());
+  const calendarRef = useRef(null);
+  const monthRefs = useRef([]);
+
+  useEffect(() => {
+    const currentMonthIndex = new Date().getMonth();
+    const currentMonthElement = monthRefs.current[currentMonthIndex];
+
+    if (currentMonthElement && calendarRef.current) {
+      currentMonthElement.scrollIntoView({
+        behaviour: "smooth",
+        inline: "center",
+      });
+    }
+  }, []);
 
   const dateRanges = selectedOption
     ? streaks
@@ -60,6 +74,7 @@ function Calendar({ selectedOption, streaks }) {
       <div
         key={monthIndex}
         className="month"
+        ref={(el) => (monthRefs.current[monthIndex] = el)}
         style={{
           width: "200px",
           height: "240px",
@@ -67,8 +82,8 @@ function Calendar({ selectedOption, streaks }) {
           margin: "auto",
         }}
       >
-        <div style={{ padding: "10px 0px" }}>
-          <b style={{ fontSize: "14px" }}>{monthName}</b>
+        <div style={{ paddingBottom: "10px", fontSize: "14px" }}>
+          <b>{monthName}</b>
         </div>
         <table
           className="calendar-table"
@@ -109,7 +124,11 @@ function Calendar({ selectedOption, streaks }) {
     return months;
   };
 
-  return <div className="calendar">{renderYear()}</div>;
+  return (
+    <div className="calendar" ref={calendarRef}>
+      {renderYear()}
+    </div>
+  );
 }
 
 export default Calendar;
