@@ -19,6 +19,7 @@ function Todo({
   handleSelection,
   task,
   tasks,
+  selectedIndex,
 }) {
   const styles = useContext(styleContext);
   return (
@@ -74,19 +75,35 @@ function Todo({
         </button>
       </div>
       <List>
-        {tasks.map((task) => (
+        {tasks.map((task, index) => (
           <ListItem
             key={task.activity_id}
             onClick={() =>
-              handleSelection({ target: { value: task.activity_id } })
+              handleSelection({
+                target: { value: task.activity_id, in: index },
+              })
             }
             sx={{
               textDecoration: task.completed ? "line-through" : "",
               color: styles.light,
-              "&:hover": {
-                transform: "scale(1.02)",
-                backgroundImage:
-                  "linear-gradient(to top, rgba(255,255,255,0.05  ), rgba(255,255,255,0))",
+              // "&:hover": {
+              //   transform: "scale(1.02)",
+              //   backgroundImage:
+              //     "linear-gradient(to top, rgba(255,255,255,0.05  ), rgba(255,255,255,0))",
+              // },
+              "@media (hover: hover) and (pointer: fine)": {
+                "&:hover": {
+                  transform: "scale(1.02)",
+                  backgroundImage:
+                    "linear-gradient(to top, rgba(255,255,255,0.05), rgba(255,255,255,0))",
+                },
+              },
+              "@media (hover: none) and (pointer: coarse)": {
+                ...(index === selectedIndex && {
+                  transform: "scale(1.02)",
+                  backgroundImage:
+                    "linear-gradient(to top, rgba(255,255,255,0.05), rgba(255,255,255,0))",
+                }),
               },
             }}
           >

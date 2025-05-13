@@ -88,22 +88,32 @@ export async function updateStreak(task, authenticated, setTasks, setStreaks) {
       start_date: todayDate,
       end_date: todayDate,
       completed: true,
+      streak_flag: true,
       streak: task.streak + 1,
     };
   }
-  if (task.start_date !== null && task.end_date !== null && task.streak !== 0) {
+  if (
+    task.start_date !== null &&
+    task.end_date !== null &&
+    task.streak_flag === true
+  ) {
     payload = {
       end_date: todayDate,
       completed: true,
       streak: task.streak + 1,
     };
   }
-  if (task.start_date !== null && task.end_date !== null && task.streak === 0) {
+  if (
+    task.start_date !== null &&
+    task.end_date !== null &&
+    task.streak_flag === false
+  ) {
     streakId = await createStreak(authenticated, task.activity_id);
     payload = {
       start_date: todayDate,
       end_date: todayDate,
       completed: true,
+      streak_flag: true,
       streak: task.streak + 1,
     };
   }
