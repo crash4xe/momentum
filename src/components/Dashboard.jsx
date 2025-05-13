@@ -28,6 +28,7 @@ function Dashboard() {
   const [profile, setProfile] = useState(null);
   const [selectedOption, setSelectedOption] = useState();
   const [streaks, setStreaks] = useState([]);
+  const [selectedIndex, setSelectedIndex] = useState(0);
 
   useEffect(() => {
     fetchData(setTasks, authenticated);
@@ -77,6 +78,7 @@ function Dashboard() {
       (task) => task.activity_id === parseInt(e.target.value)
     );
     setSelectedOption(task);
+    setSelectedIndex(e.target.in);
   }
 
   // Styles objects
@@ -176,6 +178,7 @@ function Dashboard() {
             handleSelection={handleSelection}
             task={task}
             tasks={tasks}
+            selectedIndex={selectedIndex}
           />
         </aside>
         <section className="section-calendar">
